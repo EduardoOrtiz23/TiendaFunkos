@@ -18,7 +18,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12">
-                <button type="button" class="btn btn-success" onclick="abrirModal()">Crear Nuevo</button>
+                <button type="button" class="btn btn-success" onclick="abrirModal(null)">Crear Nuevo</button>
             </div>
         </div>
 
@@ -43,7 +43,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
@@ -52,20 +52,21 @@
             </div>
             <div class="modal-body g-2">
                 
+                <input id="txtid" type="text" value="0" />
 
                 <div class="row">
 
                     <div class="col-sm-6">
-                        <label for="exampleFormControlInput1" class="form-label">Nombres</label>
+                        <label for="txtnombres" class="form-label">Nombres</label>
                         <input type="text" class="form-control" id="txtnombres" >
                     </div>
                     <div class="col-sm-6">
-                        <label for="exampleFormControlInput1" class="form-label">Apellidos</label>
+                        <label for="txtapellidos" class="form-label">Apellidos</label>
                         <input type="text" class="form-control" id="txtappelidos" >
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="exampleFormControlInput1" class="form-label">Correo</label>
+                        <label for="txtcorreo" class="form-label">Correo</label>
                         <input type="text" class="form-control" id="txtcorreo">
                     </div>
 
@@ -89,7 +90,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
             </div>
         </div>
     </div>
@@ -98,6 +99,9 @@
 
 @section scripts {
     <script>
+
+        var tabladata;
+        var filaSeleccionada
 
         jQuery.ajax({
             url: '@Url.Action("ListarUsuarios", "Home")',
@@ -152,17 +156,62 @@
         });
 
         //Configurar como se guarda la información al presionar boton de editar
-        function abrirModal() {
+        function abrirModal(json) {
+
+            $("#txtid").val(0);
+            $("#txtnombres").val("")
+            $("#txtappelidos").val("");
+            $("#txtcorreo").val("");
+            $("#cboactuvo").val(1);
+
+
+            if (json != null) {
+
+                $("#txtid").val(json.IdUsuario);
+                $("#txtnombres").val(json.Nombres);
+                $("#txtappelidos").val(json.Apellidos);
+                $("#txtcorreo").val(json.Correo);
+                $("#cboactuvo").val(json.Activo == true ? 1 : 0);
+
+            }
 
             $("#FormModal").modal("show");
         }
         $("#tabla tbody").on("click", '.btn-editar', function () {
 
-            var filaSeleccionada = $(this).closest("tr");
+            filaSeleccionada = $(this).closest("tr");
             var data = tabladata.row(filaSeleccionada).data();
 
-           
+            console.log(data)
+
+            abrirModal(data)
         })
+
+        //configurar btoon de guardar de usuarios
+        function Guardar() {
+
+            var Usuario = {
+                IdUsuario: $("#txtid").val(),
+                Activo:$("#cboactivo").val() == 1 ? true: false,
+                Apellidos: $("#txtapellidos").val(),
+                Correo: $("#txtcorreo").val(),
+                Nombres: $("#txtnombres").val()
+            }
+
+            if (Usuario.IdUsuario == 0) {
+
+                tabladata.row.add(Usuario).draw(false);
+
+            } else {
+
+                tabladata.row(filaSeleccionada).data(Usuario).draw(false);
+
+                
+            }
+            $("#FormModal").modal("hide");
+        }
+
+        
     </script>
 
 }
