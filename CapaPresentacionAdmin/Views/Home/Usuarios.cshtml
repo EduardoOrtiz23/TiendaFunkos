@@ -50,24 +50,24 @@
                 <h5 class="modal-title" id="exampleModalLabel">Usuario title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body g-2">
+            <div class="modal-body">
                 
                 <input id="txtid" type="text" value="0" />
 
-                <div class="row">
+                <div class="row g-2">
 
                     <div class="col-sm-6">
                         <label for="txtnombres" class="form-label">Nombres</label>
-                        <input type="text" class="form-control" id="txtnombres" >
+                        <input type="text" class="form-control" id="txtnombres" autocomplete="off">
                     </div>
                     <div class="col-sm-6">
                         <label for="txtapellidos" class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" id="txtappelidos" >
+                        <input type="text" class="form-control" id="txtapellidos" autocomplete="off">
                     </div>
 
                     <div class="col-sm-6">
                         <label for="txtcorreo" class="form-label">Correo</label>
-                        <input type="text" class="form-control" id="txtcorreo">
+                        <input type="text" class="form-control" id="txtcorreo" autocomplete="off">
                     </div>
 
 
@@ -81,7 +81,14 @@
                         </select>
                     </div>
 
-                    
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div id="mensajeError" class="alert alert-danger" role="alert">
+                                A simple danger alert—check it out!
+                            </div>
+                        </div>
+
+                    </div>
 
 
 
@@ -101,20 +108,9 @@
     <script>
 
         var tabladata;
-        var filaSeleccionada
+        var filaSeleccionada;
 
-        jQuery.ajax({
-            url: '@Url.Action("ListarUsuarios", "Home")',
-            type: "GET",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-
-
-                console.log(data)
-            }
-
-        })
+        
         tabladata = $("#tabla").DataTable({
             responsive: true,
             ordering: false,
@@ -149,7 +145,7 @@
 
             ],
             "language": {
-                "url":"https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
             }
             //lo de arriba sirve para cambiar el idioma a la tabla a español
 
@@ -160,18 +156,20 @@
 
             $("#txtid").val(0);
             $("#txtnombres").val("")
-            $("#txtappelidos").val("");
+            $("#txtapellidos").val("");
             $("#txtcorreo").val("");
-            $("#cboactuvo").val(1);
+            $("#cboactivo").val(1);
+
+            $("#mensajeError").hide();
 
 
             if (json != null) {
 
                 $("#txtid").val(json.IdUsuario);
                 $("#txtnombres").val(json.Nombres);
-                $("#txtappelidos").val(json.Apellidos);
+                $("#txtapellidos").val(json.Apellidos);
                 $("#txtcorreo").val(json.Correo);
-                $("#cboactuvo").val(json.Activo == true ? 1 : 0);
+                $("#cboactivo").val(json.Activo == true ? 1 : 0);
 
             }
 
@@ -198,17 +196,52 @@
                 Nombres: $("#txtnombres").val()
             }
 
-            if (Usuario.IdUsuario == 0) {
+            jQuery.ajax({
+                url: '@Url.Action("GuardarUsuario", "Home")',
+                type: "POST",
+                data: JSON.stringify({objeto : Usuario}),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
 
-                tabladata.row.add(Usuario).draw(false);
+                    //debugger;
 
-            } else {
+                    //Usuario Nuevo
+                    if (Usuario.IdUsuario == 0) {
 
-                tabladata.row(filaSeleccionada).data(Usuario).draw(false);
+                        if (data.resultado != 0) {
+                            Usuario.IdUsuario = data.resultado;
+                            tabladata.row.add(Usuario).draw(false);
+                            $("#FormModal").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
 
-                
-            }
-            $("#FormModal").modal("hide");
+                    }
+                    //Usuario Editado
+                    else {
+
+                        if (data.resultado) {
+
+                            tabladata.row(filaSeleccionada).data(Usuario).draw(false);
+                            filaSeleccionada = null;
+                            $("#FormModal").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+
+                    }
+                },
+                error: function( error){
+                console.log(error);
+                },
+                beforeSend: function (){
+                     
+                }
+            });
+
         }
 
         
