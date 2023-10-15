@@ -12,6 +12,8 @@ namespace CapaPresentacionAdmin.Controllers
 {
     public class HomeController : Controller
     {
+        private int id;
+
         public ActionResult Index()
         {
             return View();
@@ -47,6 +49,17 @@ namespace CapaPresentacionAdmin.Controllers
             return Json(new { resultado = resultado, mensaje = mensaje}, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult EliminarUsuario(int id)
+        {
+
+            bool respuesta = false;
+            string mensaje = string.Empty;
+
+            respuesta = new CN_Usuarios().Eliminar(id,out mensaje);
+
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
 
     }
 } 
