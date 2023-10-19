@@ -90,8 +90,6 @@
 
                     </div>
 
-
-
                 </div>
 
             </div>
@@ -211,7 +209,7 @@
                         contentType: "application/json; charset=utf-8",
                         succes: function (data) {
 
-                            debugger;
+                            //debugger;
 
 
                             if (data.resultado) {
@@ -260,9 +258,9 @@
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    $(".modal-body").Loadingoverlay("hide");
+                    $(".modal-body").LoadingOverlay("hide")
 
-                    $(".modal-body").LoadingOverlay("hide");
+                    
 
                     //Usuario Nuevo
                     if (Usuario.IdUsuario == 0) {
