@@ -51,8 +51,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                
-                <input id="txtid" type="text" value="0" />
+
+                <input id="txtid" type="hidden" value="0" />
 
                 <div class="row g-2">
 
@@ -77,7 +77,7 @@
                         <select id="cboactivo" class="form-select">
                             <option value="1">Si</option>
                             <option value="0">No</option>
-         
+
                         </select>
                     </div>
 
@@ -108,7 +108,7 @@
         var tabladata;
         var filaSeleccionada;
 
-        
+
         tabladata = $("#tabla").DataTable({
             responsive: true,
             ordering: false,
@@ -178,7 +178,7 @@
             filaSeleccionada = $(this).closest("tr");
             var data = tabladata.row(filaSeleccionada).data();
 
-           
+
 
             abrirModal(data)
         })
@@ -220,21 +220,21 @@
 
                                 swal("No se pudo eliminar", data.mensaje, "error")
 
-                            } 
+                            }
 
 
                         },
                         error: function (error) {
                             console.log(error)
                         },
-                        
+
                     });
 
 
                 });
 
             console.log(data);
-            
+
         })
 
 
@@ -260,7 +260,7 @@
                 success: function (data) {
                     $(".modal-body").LoadingOverlay("hide")
 
-                    
+
 
                     //Usuario Nuevo
                     if (Usuario.IdUsuario == 0) {
@@ -291,7 +291,7 @@
                     }
                 },
                 error: function( error){
-                    
+
                     $(".modal-body").LoadingOverlay("hide")
                     $("#mensajeError").text("Error Ajax");
                     $("#mensajeError").show();
@@ -307,7 +307,7 @@
 
         }
 
-        
+
     </script>
 
 }
