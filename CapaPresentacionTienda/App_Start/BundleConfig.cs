@@ -18,6 +18,7 @@ namespace CapaPresentacionTienda
                 "~/Scripts/DataTables/dataTables.responsive.js",
                  "~/Scripts/loadingoverlay/loadingoverlay.min.js",
                   "~/Scripts/sweetalert.min.js",
+                  "~/Scripts/sweetalert.validate.js",
                 "~/Scripts/script.js"
 
 
