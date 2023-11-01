@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 using CapaEntidad;
 using CapaNegocio;
+using ClosedXML.Excel;
 
 namespace CapaPresentacionAdmin.Controllers
 {
@@ -79,6 +82,55 @@ namespace CapaPresentacionAdmin.Controllers
             Dashboard objeto = new CN_Reporte().VerDashboard();
 
             return Json(new { resultado = objeto}, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public FileResult ExportarVentana(string fechainicio, string fechafin, string idtransaccion)
+        {
+
+            List<Reporte> oLista = new List<Reporte>();
+            oLista = new CN_Reporte().Ventas(fechainicio, fechafin, idtransaccion);
+
+            DataTable dt = new DataTable();
+
+            dt.Locale = new System.Globalization.CultureInfo("es-MX");
+            dt.Columns.Add("Fecha Ventana", typeof(string));
+            dt.Columns.Add("Cliente", typeof(string));
+            dt.Columns.Add("Producto", typeof(string));
+            dt.Columns.Add("Precio", typeof(string));
+            dt.Columns.Add("Cantidad", typeof(string));
+            dt.Columns.Add("Total", typeof(string));
+            dt.Columns.Add("IdTransaccion", typeof(string));
+
+            foreach (Reporte rp in oLista)
+            {
+                dt.Rows.Add(new object[]
+                {
+                    rp.FechaVenta,
+                    rp.Cliente,
+                    rp.Producto,
+                    rp.Precio,
+                    rp.Cantidad,
+                    rp.Total,
+                    rp.IdTransaccion,
+
+                });
+            }
+
+            dt.TableName = "Datos";
+
+            using(XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt);
+                using (MemoryStream stream = new MemoryStream())
+                {
+
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ReporteVenta" + DateTime.Now.ToString() + "xlsx");
+                }
+            }
+
+
         }
     }
 } 

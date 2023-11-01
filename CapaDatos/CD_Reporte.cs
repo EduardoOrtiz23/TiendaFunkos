@@ -44,7 +44,7 @@ namespace CapaDatos
                                 Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-MX")),
                                 Cantidad = Convert.ToInt32(dr["Cantidad"].ToString()),
                                 Total = Convert.ToDecimal(dr["Total"], new CultureInfo("es-MX")),
-                                IdTransaccion = dr["Activo"].ToString(),
+                                IdTransaccion = dr["IdTransaccion"].ToString(),
                             });
                         }
                     }
