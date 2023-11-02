@@ -41,6 +41,15 @@ namespace CapaPresentacionAdmin.Controllers
             }
             else
             {
+
+                if(oUsuario.Reestablecer){
+
+                    TempData["IdUsuario"] = oUsuario.IdUsuario;
+
+                    return RedirectToAction("CambiarClave");
+
+                }
+
                 ViewBag.Error = null;
                 return RedirectToAction("Index", "Home");
             }
