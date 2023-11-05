@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.EnterpriseServices;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Web.Mvc;
 
 namespace CapaPresentacionAdmin.Controllers
 {
+    [Authorize] //establece que se ocupa iniciar sesion para acceder a lo de aquí //
     public class MantenedorController : Controller
     {
         // GET: Mantenedor

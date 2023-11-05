@@ -8,6 +8,8 @@ using CapaEntidad;
 using CapaNegocio;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
 
+using System.Web.Security;
+
 namespace CapaPresentacionAdmin.Controllers
 {
     public class AccesoController : Controller
@@ -50,6 +52,8 @@ namespace CapaPresentacionAdmin.Controllers
                     return RedirectToAction("CambiarClave");
 
                 }
+
+                FormsAuthentication.SetAuthCookie(oUsuario.Correo, false);
 
                 ViewBag.Error = null;
                 return RedirectToAction("Index", "Home");
@@ -102,6 +106,44 @@ namespace CapaPresentacionAdmin.Controllers
            
         
     }
+        [HttpPost] //metodo para restablecer la contraseña del usuario
+        public ActionResult Reestablecer(string correo)
+        {
+            Usuario ousuario = new Usuario();
+
+            ousuario = new CN_Usuarios().Listar().Where(item => item.Correo == correo).FirstOrDefault();
+
+            if (ousuario == null)
+            {
+
+                ViewBag.Error = "No se encontro un usuario relacionado a ese correo";
+                return View();
+            }
+
+            string mensaje = string.Empty;
+            bool respuesta = new CN_Usuarios().ReestablecerClave(ousuario.IdUsuario, correo, out mensaje);
+
+            if (respuesta)
+            {
+                ViewBag.Error = null;
+                return RedirectToAction("Index", "Acceso");
+            }
+            else
+            {
+                ViewBag.Error = mensaje; 
+                return View();
+            }
+
+
+        }
+
+        public ActionResult CerrarSesion ()
+        {
+            FormsAuthentication.SignOut(); //de esta manera se cierra la autenticacion 
+            return RedirectToAction("Index", "Acceso");
+        }
 
         }
     }
+
+
