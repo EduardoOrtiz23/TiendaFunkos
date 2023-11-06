@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using CapaEntidad;
 using CapaNegocio;
 
@@ -36,7 +37,7 @@ namespace CapaPresentacionTienda.Controllers
 
 
         [HttpPost]
-        public ActionResult Registrar(Cliente objeto)
+        public ActionResult Registrar(Cliente objeto)   
         {
 
             int resultado;
@@ -66,6 +67,125 @@ namespace CapaPresentacionTienda.Controllers
             }
 
            
+        }
+
+        [HttpPost]
+        public ActionResult Index(string correo, string clave)
+        {
+            Cliente oCliente = null;
+
+            oCliente = new CN_Cliente().Listar().Where(item => item.Correo == correo && item.Clave == CN_Recursos.ConvertirSha256(clave)).FirstOrDefault();
+
+            if (oCliente == null)
+            {
+                ViewBag.Error = "Correo o contraseña no son correctas";
+                return View();
+
+            }
+            else
+            {
+                if (oCliente.Reestablecer)
+                {
+                    TempData["IdCliente"] = oCliente.IdCliente;
+                    return RedirectToAction("CambiarClave", "Acceso");
+                }
+                else
+                {
+
+                    FormsAuthentication.SetAuthCookie(oCliente.Correo, false);
+
+                    Session["Cliente"] = oCliente;
+
+                    ViewBag.Error = null;
+                    return RedirectToAction("Index", "Tienda");
+                }
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult Restablecer(string correo)
+        {
+
+            Cliente cliente = new Cliente();
+
+            cliente = new CN_Cliente().Listar().Where(item => item.Correo == correo).FirstOrDefault();
+
+            if (cliente == null)
+            {
+
+                ViewBag.Error = "No se encontro un clientr relacionado a ese correo";
+                return View();
+            }
+
+            string mensaje = string.Empty;
+            bool respuesta = new CN_Cliente().ReestablecerClave(cliente.IdCliente, correo, out mensaje);
+
+            if (respuesta)
+            {
+                ViewBag.Error = null;
+                return RedirectToAction("Index", "Acceso");
+            }
+            else
+            {
+                ViewBag.Error = mensaje;
+                return View();
+            }
+
+        }
+
+
+        [HttpPost]
+        public ActionResult CambiarClave(string idcliente, string claveactual, string nuevaclave, string confirmarclave)
+        {
+            Cliente oCliente = new Cliente();
+
+            oCliente = new CN_Cliente().Listar().Where(u => u.IdCliente == int.Parse(idcliente)).FirstOrDefault();
+
+            if (oCliente.Clave != CN_Recursos.ConvertirSha256(claveactual))
+            {
+
+                TempData["Idcliente"] = idcliente;
+                ViewData["vclave"] = "";
+                ViewBag.Error = "La contraseña actual no es correcta";
+                return View();
+            }
+            else if (nuevaclave != confirmarclave)
+            {
+
+                TempData["IdCliente"] = idcliente;
+                ViewData["vclave"] = claveactual;
+                ViewBag.Error = "La contraseña actual no coinciden";
+                return View();
+            }
+            ViewData["vclave"] = "";
+            nuevaclave = CN_Recursos.ConvertirSha256(nuevaclave);
+
+            string mensaje = string.Empty;
+
+            bool respuesta = new CN_Cliente().CambiarClave(int.Parse(idcliente), nuevaclave, out mensaje);
+
+            if (respuesta)
+            {
+                return RedirectToAction("Index");
+
+
+            }
+            else
+            {
+
+                TempData["Idcliente"] = idcliente;
+
+                ViewBag.Error = mensaje;
+                return View();
+            }
+        }
+
+
+        public ActionResult CerrarSesion()
+        {
+            FormsAuthentication.SignOut(); //de esta manera se cierra la autenticacion 
+            return RedirectToAction("Index", "Acceso");
         }
 
     }
