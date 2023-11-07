@@ -8,7 +8,7 @@ namespace CapaPresentacionTienda
         // Para obtener más información sobre las uniones, visite https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new Bundle("~/bundles/jquery").Include(
+            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
 
@@ -40,7 +40,11 @@ namespace CapaPresentacionTienda
                         "~/Scripts/modernizr-*"));*/
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.bundle.js"));
+                      "~/Scripts/bootstrap.bundle.js",
+                      "~/Scripts/fontawesome/all.min.js",
+                      "~/Scripts/loadingoverlay.min.js",
+                      "~/Scripts/sweetalert.js"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/site.css",

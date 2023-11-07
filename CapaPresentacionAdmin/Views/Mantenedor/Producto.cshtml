@@ -218,8 +218,9 @@
 
                }
 
-           $("#FormModal").modal("show");
+               $("#FormModal").modal("show");
            }
+
            $("#tabla tbody").on("click", '.btn-editar', function () {
 
            filaSeleccionada = $(this).closest("tr");
@@ -227,6 +228,7 @@
 
            abrirModal(data)
            })
+
 
            $("#tabla tbody").on("click", '.btn-eliminar', function () {
 

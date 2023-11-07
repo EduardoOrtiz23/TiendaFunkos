@@ -49,7 +49,7 @@ namespace CapaPresentacionTienda.Controllers
 
             if (objeto.Clave != objeto.ConfirmarClave)
             {
-                ViewBag.Error = "Las constraseñas no coinciden";
+                ViewBag.Error = "Las contraseñas no coinciden";
                 return View();
             }
 
@@ -58,7 +58,7 @@ namespace CapaPresentacionTienda.Controllers
             if (resultado > 0)
             {
                 ViewBag.Error = null;
-                return RedirectToAction("Index", "Accesso");
+                return RedirectToAction("Index", "Acceso");
             }
             else
             {
@@ -114,7 +114,7 @@ namespace CapaPresentacionTienda.Controllers
             if (cliente == null)
             {
 
-                ViewBag.Error = "No se encontro un clientr relacionado a ese correo";
+                ViewBag.Error = "No se encontro un cliente relacionado a ese correo";
                 return View();
             }
 
@@ -184,6 +184,7 @@ namespace CapaPresentacionTienda.Controllers
 
         public ActionResult CerrarSesion()
         {
+            Session["Cliente"] = null;
             FormsAuthentication.SignOut(); //de esta manera se cierra la autenticacion 
             return RedirectToAction("Index", "Acceso");
         }
