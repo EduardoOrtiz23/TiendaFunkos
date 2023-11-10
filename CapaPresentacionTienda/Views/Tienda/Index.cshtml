@@ -139,6 +139,7 @@
         $(document).ready(function () {
 
             MostrarCategorias();
+            MostrarProducto(0);
 
         })
         function MostrarCategorias() {
@@ -200,7 +201,7 @@
                     $("#contenedor_producto").LoadingOverlay("hide");
 
 
- 
+
 
                     $.each(response.data, function (i, element) {
 
@@ -211,18 +212,26 @@
                                     $("<div>").addClass("text-center").append(
                                         $("<h5>").addClass("fw-bolder").text(element.Nombre),
                                         "$ " + element.Precio.toFixed(2) +"USD"
-                                    ),  
-                                    $("<div>").addClass("card-footer p-2 pt-0 border-top-0 bg-transparent").append(
-                                        @if (Session["Cliente"] != null) { 
-                                            @:$("<button>").addClass("btn-btn-success mt-auto agregarcarrito").data("idproducto", elemento.IdProducto.text("Agregar a carrito")),
+                                    ),
+                                ),
+                                  $("<div>").addClass("card-footer p-2 pt-0 border-top-0 bg-transparent").append(
+
+
+                                    $("<div>").addClass("d-grid gap-2").append(
+
+                                       @if (Session["Cliente"] != null) {
+                                          @:$("<button>").addClass("btn-btn-success mt-auto agregarcarrito").data("idproducto", elemento.IdProducto.text("Agregar a carrito")),
                                         }
 
                                         $("<a>").addClass("btn btn-dark mt-auto")
                                             .attr({ "href": "@Url.Action("DetalleProducto","Tienda")" + "?idproducto=" + element - IdProducto })
-                                             .text("Ver detalle")
+                                            .text("Ver detalle")
 
                                     )
-                                )
+
+
+
+                                    )
                             )
                         ).appendTo("#contenedor_producto")
 
@@ -241,7 +250,7 @@
         $("btnaplicarfiltro").click(function () {
 
             var _idcategoria = $("input[name=categoria]:checked").val()
-            
+
 
         })
         function MostrarProductos(_idcategoria)
