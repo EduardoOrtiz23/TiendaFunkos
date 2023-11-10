@@ -35,7 +35,7 @@ namespace CapaPresentacionTienda.Controllers
             bool conversion;
 
             lista = new CN_Producto().Listar().Select(p => new Producto(){
-                IdProducto = p.idProducto,
+                IdProducto = p.IdProducto,
                 Nombre = p.Nombre,
                 Descripcion = p.Descripcion,
                 oMarca = p.oMarca,
@@ -48,7 +48,7 @@ namespace CapaPresentacionTienda.Controllers
                     Activo = p.Activo
 
             }).Where(p => 
-            p.oCateogria.IdCategoria == (idcategoria == 0 ? p.oCategoria.IdCategoria : idcategoria) &&
+            p.oCategoria.IdCategoria == (idcategoria == 0 ? p.oCategoria.IdCategoria : idcategoria) &&
            p.Stock > 0 && p.Activo == true
             ).ToList();
 
