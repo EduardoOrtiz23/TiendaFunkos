@@ -23,27 +23,34 @@
                     <div class="row mb-12">
                         <div class="card">
                             <div class="card-heard bg-dark text-white">
-                                categorias
+                                Categorias
                             </div>
-                            <div id="contendero_categoria" class="card-body">
-                                <div class="form-check">
-  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-  <label class="form-check-label" for="flexRadioDefault1">
-    Default radio
-  </label>
-</div>
+                            <div id="contenedor_categoria" class="card-body">
+
                             </div>
                         </div>
 
                     </div>
 
                 </div>
-               
+                @*<div class="row mb-3">
+                        <div class="row mb-12">
+                            <div class="card">
+                                <div class="card-heard bg-dark text-white">
+                                    ---
+                                </div>
+                                <div class="card-body">
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>*@
                 <div class="row mb-3">
                     <div class="row mb-12">
                         <div class="d-grid gap-2">
                             <button id="btnaplicarfiltro" class="btn btn-outline-dark btn-block" type="button">
-                                <i class="fas fas-filter"></i>Aplicar Filtro
+                                <i class="fas fa-filter"></i>Aplicar Filtro
                             </button>
                         </div>
 
@@ -57,7 +64,7 @@
 
             </div>
             <div class="col-sm-9">
-                <div id="contender_producto" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <div id="contenedor_producto" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
@@ -130,6 +137,7 @@
             MostrarProducto(0);
 
         })
+
         function MostrarCategorias() {
 
             jQuery.ajax({
@@ -137,7 +145,7 @@
                 type: "GET",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                succes: function (response) { 
+                success: function (response) {
                     //<div class="form-check">
                     //    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                     //        <label class="form-check-label" for="flexRadioDefault1">
@@ -145,38 +153,36 @@
                     //        </label>
                     //</div>
 
-                    $("#contenedor_categoria").LoadingOverlay("hide");
-
 
                     $("<div>").addClass("form-check").append(
 
-                        $("<input>").addClass("form-check-input").attr({"type":"radio", "name":"categoria","value":"0","id":"cx","checked":"checked"}),
-                        $("<label>").addClass("form-check-label").text("Todos").attr({"for":"cx"})
+                        $("<input>").addClass("form-check-input").attr({ "type" : "radio", "name" : "Categoria", "value" : "0", "id" : "cx", "checked" : "checked" }),
+                        $("<label>").addClass("form-check-label").text("Todos").attr({ "for": "cx" })
+
                     ).appendTo("#contenedor_categoria")
+
 
                     $.each(response.data, function (i, element) {
                         $("<div>").addClass("form-check").append(
 
-                            $("<input>").addClass("form-check-input").attr({ "type": "radio", "name": "categoria", "value": element.IdCategoria, "id": "c" + i}),
+                            $("<input>").addClass("form-check-input").attr({ "type": "radio", "name": "Categoria", "value": element.IdCategoria, "id": "c"  + i}),
                             $("<label>").addClass("form-check-label").text(element.Descripcion).attr({ "for": "c" + i })
+
                         ).appendTo("#contenedor_categoria")
 
                     })
-                },
-                beforeSend: function () {
-                    $("#contenedor_categoria").LoadingOverlay("show");
                 }
             })
 
-
-
         }
+
+
          /*////////////< !--Product actions-- >*/
 
         /*////////////   Aquí agrega la funcion MostrarMarca, como no nos incumbe, lo saltamos, Parte 34 */
 
 
-        function MostrarProductos(_idcategoria) {
+       @* function MostrarProductos(_idcategoria) {
 
             jQuery.ajax({
                 url: "@Url.Action("ListarProducto", "Tienda")",
@@ -241,7 +247,7 @@
 
 
         })
-        function MostrarProductos(_idcategoria)
+        function MostrarProductos(_idcategoria)*@
 
     </script>
 
