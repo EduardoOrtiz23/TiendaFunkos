@@ -274,6 +274,7 @@
         //Cada vez que se haga click en un boton con la clase agregarcarrito, me vas a imprimir el id del producto
         //Y tambien se va agregar al carrito y se mostrara un swal
         $(document).on("click", "button.agregarcarrito", function () {
+
             console.log($(this).data("idproducto"))
 
             jQuery.ajax({
