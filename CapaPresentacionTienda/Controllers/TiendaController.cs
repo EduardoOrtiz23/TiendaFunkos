@@ -177,5 +177,20 @@ namespace CapaPresentacionTienda.Controllers
             return Json(new { respuesta = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Carrito()
+        {
+            return View();
+
+
+        }
+
+
+
+
     }
+
+
+
+
+
 }
