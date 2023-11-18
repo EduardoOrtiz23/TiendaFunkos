@@ -8,6 +8,9 @@ using CapaEntidad;
 using CapaNegocio;
 
 using System.IO;
+using System.Threading.Tasks;
+using System.Data;
+using System.Globalization;
 
 namespace CapaPresentacionTienda.Controllers
 {
@@ -19,7 +22,7 @@ namespace CapaPresentacionTienda.Controllers
             return View();
         }
 
-        public ActionResult DetalleProducto(int idproducto=0)
+        public ActionResult DetalleProducto(int idproducto = 0)
         {
             Producto oProducto = new Producto();
             bool conversion;
@@ -97,7 +100,7 @@ namespace CapaPresentacionTienda.Controllers
             bool existe = new CN_Carrito().ExisteCarrito(idcliente, idproducto);
 
             bool respuesta = false;
-            
+
             string mensaje = string.Empty;
 
             if (existe)
@@ -126,7 +129,7 @@ namespace CapaPresentacionTienda.Controllers
         {
             int idcliente = ((Cliente)Session["Cliente"]).IdCliente;
 
-            List<Carrito>   oLista = new List<Carrito>();
+            List<Carrito> oLista = new List<Carrito>();
 
             bool conversion;
 
@@ -139,7 +142,7 @@ namespace CapaPresentacionTienda.Controllers
                     oCategoria = oc.oProducto.oCategoria,
                     Precio = oc.oProducto.Precio,
                     RutaImagen = oc.oProducto.RutaImagen,
-                    Base64 = CN_Recursos.ConvertirBase64(Path.Combine(oc.oProducto.RutaImagen,oc.oProducto.NombreImagen),out conversion),
+                    Base64 = CN_Recursos.ConvertirBase64(Path.Combine(oc.oProducto.RutaImagen, oc.oProducto.NombreImagen), out conversion),
                     Extension = Path.GetExtension(oc.oProducto.NombreImagen)
                 },
                 Cantidad = oc.Cantidad
@@ -187,10 +190,72 @@ namespace CapaPresentacionTienda.Controllers
 
 
 
-    }
+        [HttpPost]
+
+        public async Task<JsonResult> ProcesarPago(List<Carrito> oListaCarrito, Venta oVenta)
+        {
+
+            decimal total = 0;
+
+            DataTable detalle_venta = new DataTable();
+            detalle_venta.Locale = new CultureInfo("es-PE");
+            detalle_venta.Columns.Add("IdProducto", typeof(string));
+            detalle_venta.Columns.Add("Cantidad", typeof(int));
+            detalle_venta.Columns.Add("Total", typeof(decimal));
+
+            foreach (Carrito oCarrito in oListaCarrito)
+            {
+                decimal subtotal = Convert.ToDecimal(oCarrito.Cantidad.ToString()) * oCarrito.oProducto.Precio;
+
+                total += subtotal;
+
+                detalle_venta.Rows.Add(new object[]
+                {
+                     oCarrito.oProducto.IdProducto,
+                     oCarrito.Cantidad,
+                     subtotal
+                });
+
+            }
+
+            oVenta.MontoTotal = total;
+            oVenta.IdCliente = ((Cliente)Session["Cliente"]).IdCliente;
+
+            TempData["Venta"] = oVenta;
+            TempData["DetalleVenta"] = detalle_venta;
+
+            return Json(new { Status = true, Link = "/Tienda/PagoEfectuado?idTransaccion=code0001&status=true" }, JsonRequestBehavior.AllowGet);
 
 
+        }
 
 
+        public async Task<ActionResult> PagoEfectuado()
+        {
+            string idtransaccion = Request.QueryString["idTransaccion"];
+            bool status = Convert.ToBoolean(Request.QueryString["status"]);
 
-}
+            ViewData["Status"] = status;
+
+            if (status)
+            {
+
+                Venta oVenta = (Venta)TempData["Venta"];
+
+                DataTable detalle_venta = (DataTable)TempData["DetalleVenta"];
+
+                oVenta.IdTransaccion = idtransaccion;
+
+                string mensaje = string.Empty;
+
+                bool respuesta = new CN_Venta().Registrar(oVenta, detalle_venta, out mensaje);
+
+                ViewData["IdTransaccion"] = oVenta.IdTransaccion;
+
+            }
+
+            return View();
+        }
+    } }
+
+
