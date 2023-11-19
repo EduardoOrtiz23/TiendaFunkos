@@ -343,7 +343,7 @@
 
             }
 
-            if ($("#cbodistrito").val() == null || $("#txtnombrecontacto").val() == "" || $("#txtdireccion").val() == "" || $("#txttelefono").val() == "") {
+            if ($("#txtnombrecontacto").val() == "" || $("#txtdireccion").val() == "" || $("#txttelefono").val() == "") {
 
                 swal("", "Debe completar los datos de detalle envio", "warning");
                 return
@@ -352,12 +352,12 @@
 
             var venta = {
 
-                TotalProducto: $("input.input - cantidad").length,
+                TotalProducto: $("input.input-cantidad").length,
                 MontoTotal: 0,
                 Contacto: $("#txtnombrecontacto").val(),
-                IdDistrito: $("#cbodistrito").val(),
+                //IdDistrito: $("#cbodistrito").val(),
                 Telefono: $("#txttelefono").val(),
-                 Direccion: $("#txtdireccion").val()
+                Direccion: $("#txtdireccion").val()
 
             }
 
@@ -380,9 +380,9 @@
             jQuery.ajax({
                 url: '@Url.Action("ProcesarPago", "Tienda")',
                 type: "POST",
-                data: JSON.stringify({ olistaCarrito: lista_carrito, oVenta: venta });
+                data: JSON.stringify({ olistaCarrito: lista_carrito, oVenta: venta }),
                 dataType: "json",
-                contentType: "application/json; charset=utf-8"
+                contentType: "application/json; charset=utf-8",
                 success: function (data) {
 
                     $.LoadingOverlay("hide")
@@ -399,7 +399,7 @@
 
                 },
                 beforeSend: function () {$.LoadingOverlay("show")},
-                error: function (error) { $.LoadingOverlay("hide")},
+                error: function (error) {$.LoadingOverlay("hide")},
 
             })
 

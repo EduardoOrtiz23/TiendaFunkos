@@ -87,7 +87,7 @@ namespace CapaDatos
             {
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    SqlCommand cmd = new SqlCommand("select count(*) from carrito where idcliente = @idcliente", oconexion);
+                    SqlCommand cmd = new SqlCommand("Select count(*) from CARRITO where IdCliente = @idcliente", oconexion);
                     cmd.Parameters.AddWithValue("@idcliente", idcliente);
                     cmd.CommandType = CommandType.Text;
                     oconexion.Open();

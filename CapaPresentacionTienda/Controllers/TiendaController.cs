@@ -198,7 +198,7 @@ namespace CapaPresentacionTienda.Controllers
             decimal total = 0;
 
             DataTable detalle_venta = new DataTable();
-            detalle_venta.Locale = new CultureInfo("es-PE");
+            detalle_venta.Locale = new CultureInfo("es-MX");
             detalle_venta.Columns.Add("IdProducto", typeof(string));
             detalle_venta.Columns.Add("Cantidad", typeof(int));
             detalle_venta.Columns.Add("Total", typeof(decimal));
