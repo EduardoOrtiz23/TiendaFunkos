@@ -1,0 +1,18 @@
+Client ID: AaTuK2N7MEOsQ7rsnrESTc46fxG-xGjcxsz2YQC_SGSUXSA9axyUcXt6XLOfpLr87QO91dsQVUpr3F_E
+
+Contraseña (Secret Key): EHz5KzPFWhnVQiRpMHEbZl2MQAsXxzPlqO3toolzGG32RLsfdH7X-t711e8clGXDnQExfVxtuuOddSZk
+
+TIENDA
+Email ID: sb-nuab128257885@business.example.com
+Password: W24)%Lky
+
+CLIENTE
+Email ID: sb-nu3xq28257884@personal.example.com
+Password: 8!?qPO+Q
+
+Card number: 4032038198524062
+Expiry date: 08/2027
+CVC code: 641
+
+https://api-m.sandbox.paypal.com
+https://api-m.sandbox.paypal.com/v2/checkout/orders
