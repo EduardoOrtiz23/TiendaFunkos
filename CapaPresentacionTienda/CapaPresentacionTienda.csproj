@@ -229,7 +229,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Acceso\Index.cshtml" />
     <Content Include="Views\Acceso\Registrar.cshtml" />
-    <Content Include="Views\Acceso\Restablecer.cshtml" />
+    <Content Include="Views\Acceso\Reestablecer.cshtml" />
     <Content Include="Views\Acceso\CambiarClave.cshtml" />
     <Content Include="webfonts\fa-brands-400.svg" />
     <Content Include="webfonts\fa-regular-400.svg" />
