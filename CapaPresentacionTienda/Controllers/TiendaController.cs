@@ -221,7 +221,7 @@ namespace CapaPresentacionTienda.Controllers
                     name = oCarrito.oProducto.Nombre,
                     quantity = oCarrito.Cantidad.ToString(),
                     unit_amount = new UnitAmount(){
-                        currency_code = "USD",
+                        currency_code = "MXN",
                         value = oCarrito.oProducto.Precio.ToString("G",new CultureInfo("es-MX"))
 
 
@@ -241,12 +241,12 @@ namespace CapaPresentacionTienda.Controllers
             PurchaseUnit purchaseUnit = new PurchaseUnit()
             {
                 amount = new Amount() {
-                    currency_code = "USD",
+                    currency_code = "MXN",
                     value = total.ToString("G", new CultureInfo("es-MX")),
                     breakdown = new Breakdown() {
 
                         item_total = new ItemTotal() {
-                            currency_code = "USD",
+                            currency_code = "MXN",
                             value = total.ToString("G", new CultureInfo("es-MX")),
 
                         }
@@ -265,7 +265,7 @@ namespace CapaPresentacionTienda.Controllers
                 intent = "CAPTURE",
                 purchase_units = new List<PurchaseUnit>() { purchaseUnit },
                 application_context = new ApplicationContext(){
-                    brand_name = "MiTienda.com",
+                    brand_name = "TiendaFunkos.com",
                     landing_page = "NO_PREFERENCE",
                     user_action = "PAY_NOW",
                     return_url = "https://localhost:44333/Tienda/PagoEfectuado",
