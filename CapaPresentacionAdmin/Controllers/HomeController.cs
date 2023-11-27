@@ -74,6 +74,7 @@ namespace CapaPresentacionAdmin.Controllers
             oLista = new CN_Reporte().Ventas(fechainicio, fechafin, idtransaccion);
 
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
+            //Cambio
         }
 
         [HttpGet]
