@@ -86,7 +86,7 @@ namespace CapaPresentacionAdmin.Controllers
         }
 
 
-        public FileResult ExportarVentana(string fechainicio, string fechafin, string idtransaccion)
+        public FileResult ExportarVenta(string fechainicio, string fechafin, string idtransaccion)
         {
 
             List<Reporte> oLista = new List<Reporte>();

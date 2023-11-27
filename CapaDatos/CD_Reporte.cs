@@ -36,16 +36,17 @@ namespace CapaDatos
                     {
                         while (dr.Read())
                         {
-                            lista.Add(new Reporte()
-                            {
+                            lista.Add(
+                                new Reporte()
+                                {
                                 FechaVenta = dr["FechaVenta"].ToString(),
                                 Cliente = dr["Cliente"].ToString(),
                                 Producto = dr["Producto"].ToString(),
                                 Precio = Convert.ToDecimal(dr["Precio"], new CultureInfo("es-MX")),
                                 Cantidad = Convert.ToInt32(dr["Cantidad"].ToString()),
                                 Total = Convert.ToDecimal(dr["Total"], new CultureInfo("es-MX")),
-                                IdTransaccion = dr["IdTransaccion"].ToString(),
-                            });
+                                IdTransaccion = dr["IdTransaccion"].ToString()
+                                });
                         }
                     }
                 }

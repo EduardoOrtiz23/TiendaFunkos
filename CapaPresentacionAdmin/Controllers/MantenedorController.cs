@@ -84,7 +84,7 @@ namespace CapaPresentacionAdmin.Controllers
         [HttpPost]
         public JsonResult GuardarProducto(string objeto, HttpPostedFileBase archivoImagen)
         {
-            
+       
             string mensaje = string.Empty;
             bool operacion_exitosa = true;
             bool guardar_imagen_exito = true;
@@ -95,7 +95,7 @@ namespace CapaPresentacionAdmin.Controllers
 
             decimal precio;
 
-            if (decimal.TryParse(oProducto.PrecioTexto,NumberStyles.AllowDecimalPoint,new CultureInfo("es-MEX"), out precio))
+            if (decimal.TryParse(oProducto.PrecioTexto,NumberStyles.AllowDecimalPoint,new CultureInfo("es-MX"), out precio))
             {
 
                 oProducto.Precio = precio;
@@ -146,7 +146,7 @@ namespace CapaPresentacionAdmin.Controllers
                     }
                     catch(Exception ex)
                     {
-                        string MSG = ex.Message;
+                        string msg = ex.Message;
                         guardar_imagen_exito = false;
                     }
 
@@ -200,9 +200,8 @@ namespace CapaPresentacionAdmin.Controllers
             return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet );
         }
 
-
-
         #endregion
+        
 
     }
 }

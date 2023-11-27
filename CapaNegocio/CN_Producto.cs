@@ -70,7 +70,6 @@ namespace CapaNegocio
         }
 
 
-
         public bool Editar(Producto obj, out string Mensaje)
         {
             Mensaje = string.Empty;
@@ -114,11 +113,13 @@ namespace CapaNegocio
             }
         }
 
-        public bool GuardarDatosImagen(Producto obj, out string Mensaje) {
+        public bool GuardarDatosImagen(Producto obj, out string Mensaje)
+        {
 
             return objCapaDato.GuardarDatosImagen(obj, out Mensaje);
 
         }
+
 
         public bool Eliminar(int id, out string Mensaje)
         {

@@ -88,7 +88,7 @@
                 <div class="col-sm-2">
                     <div class="mb-2">
                         <label class="form-label"> Id Transaccion:</label>
-                        <input class="form-control" type="text" id="txtidtransaccion" name="idtran" />
+                        <input class="form-control" type="text" id="txtidtransaccion" name="idtransaccion" />
 
                     </div>
 
@@ -172,7 +172,7 @@
                       $("#totalVenta").text(objeto.TotalVenta)
                       $("#totalProducto").text(objeto.TotalProducto)
 
-                  },
+                  }
               });
 
                // fechainicio,string, fechafin,string idtransaccion
@@ -180,41 +180,26 @@
               var Url = '@Url.Action("ListaReporte", "Home")' +
               "?fechainicio=" + $("#txtfechainicio").val() +
               "&fechafin=" + $("#txtfechafin").val() +
-              "&idtransaccion=" + $("#txttransaccion").val()
+              "&idtransaccion=" + $("#txtidtransaccion").val()
 
-
-              // listener de boton buscar
-               $("#abtnbuscar").on("click", function () {
-
-                  var nueva_url = '@Url.Action("ListaReporte", "Home")' +
-                      "?fechainicio=" + $("#txtfechainicio").val() +
-                      "&fechafin=" + $("#txtfechafin").val() +
-                      "&idtransaccion=" + $("#txttransaccion").val()
-
-
-                  tabladata.ajax.url(nueva_url).load();
-
-               });  
 
                 tabladata = $("#tabla").DataTable({
                     responsive: true,
                     ordering: false,
-                    "ajax": {
+                    "ajax": {   
                         url: Url,
                         type: "GET",
                         dataType: "json"
 
                     },
                     "columns": [
-                        { "data": "FechaVenta" },
-                        { "data": "Cliente" },
-                        { "data": "Producto" },
-                        { "data": "Precio" },
-                        { "data": "Cantidad" },
-                        { "data": "Total" },
-                        { "data": "IdTransaccion" },
-
-
+                        {"data":"FechaVenta"},
+                        {"data":"Cliente"},
+                        {"data":"Producto"},
+                        {"data":"Precio"},
+                        {"data":"Cantidad"},
+                        {"data":"Total"},
+                        {"data":"IdTransaccion"}
                     ],
                     "language": {
                         "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
@@ -223,19 +208,22 @@
 
                 });
 
-
         })
 
+               // listener de boton buscar
+               $("#btnbuscar").on("click", function () {
+
+                  var nueva_url = '@Url.Action("ListaReporte", "Home")' +
+                      "?fechainicio=" + $("#txtfechainicio").val() +
+                      "&fechafin=" + $("#txtfechafin").val() +
+                      "&idtransaccion=" + $("#txtidtransaccion").val()
 
 
+                  tabladata.ajax.url(nueva_url).load();
 
-
-
-
-
+               })
 
 
     </script>
     
-    
-    }
+}
