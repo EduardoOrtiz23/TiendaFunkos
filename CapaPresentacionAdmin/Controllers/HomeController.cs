@@ -17,6 +17,7 @@ namespace CapaPresentacionAdmin.Controllers
     public class HomeController : Controller
     {
         private int id;
+        //Pro
 
         public ActionResult Index()
         {
